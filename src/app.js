@@ -5,10 +5,14 @@ const productRouter = require("./routes/product.routes");
 const userRouter = require("./routes/user.routes");
 const fileRouter = require("./routes/file.routes");
 const httpLogger = require("./logging/httpLogger");
+const multer = require("multer");
 
 const app = express();
 
 app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(multer().none());
+// app.use(express.toString());
 
 app.use(cors());
 app.use(helmet());

@@ -1,4 +1,6 @@
 const express = require("express");
+const multer = require("multer");
+const fileUploadController = require("../controllers/file.controller");
 const router = express.Router();
 const {
   getAllProducts,
@@ -12,9 +14,17 @@ const {
   updateProductValidationMW,
 } = require("../validators/product.validator");
 
+const upload = multer({ dest: "src/uploads/" });
+
 router.get("/", getAllProducts);
 router.get("/:id", getProductByID);
-router.post("/", addProductValidationMW, createProduct);
+router.post(
+  "/",
+  upload.single("image"),
+  fileUploadController,
+  addProductValidationMW,
+  createProduct
+);
 router.patch("/:id", updateProductValidationMW, updateProduct);
 router.delete("/:id", deleteProduct);
 

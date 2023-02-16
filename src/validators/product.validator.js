@@ -6,6 +6,7 @@ const productAddSchema = Joi.object({
   long_description: Joi.string().required().trim(),
   category: Joi.string().max(255).required().trim(),
   price: Joi.number().integer().required(),
+  image: Joi.string().optional().trim(),
 });
 
 const updateProductSchema = Joi.object({
@@ -14,33 +15,32 @@ const updateProductSchema = Joi.object({
   long_description: Joi.string().optional().trim(),
   category: Joi.string().max(255).optional().trim(),
   price: Joi.number().integer().optional(),
+  image: Joi.string().optional().trim(),
 });
 
 async function addProductValidationMW(req, res, next) {
-  const blogPayLoad = req.body;
+  const payLoad = req.body;
 
   try {
-    await productAddSchema.validateAsync(blogPayLoad);
+    await productAddSchema.validateAsync(payLoad);
     next();
   } catch (error) {
-    next({
-      status: 400,
-      message: error.details[0].message,
-    });
+    error.source = "prduct validation";
+    error.message = error.details[0].message;
+    next(error);
   }
 }
 
 async function updateProductValidationMW(req, res, next) {
-  const blogPayLoad = req.body;
+  const payLoad = req.body;
 
   try {
-    await updateProductSchema.validateAsync(blogPayLoad);
+    await updateProductSchema.validateAsync(payLoad);
     next();
   } catch (error) {
-    next({
-      status: 400,
-      message: error.details[0].message,
-    });
+    error.source = "prduct validation";
+    error.message = error.details[0].message;
+    next(error);
   }
 }
 
