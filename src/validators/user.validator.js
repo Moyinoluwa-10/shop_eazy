@@ -11,6 +11,7 @@ const userAddSchema = Joi.object({
     .email({ minDomainSegments: 2 }),
   phone_number: Joi.number().integer().required(),
   password: Joi.string().max(255).required().trim(),
+  role: Joi.string().max(255).optional().trim(),
   delivery_address: Joi.string().max(255).required().trim(),
 });
 
@@ -21,10 +22,9 @@ async function addUserValidationMW(req, res, next) {
     await userAddSchema.validateAsync(userPayLoad);
     next();
   } catch (error) {
-    next({
-      status: 400,
-      message: error.details[0].message,
-    });
+    error.source = "user validation";
+    error.message = error.details[0].message;
+    next(error);
   }
 }
 

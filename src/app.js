@@ -3,23 +3,19 @@ const cors = require("cors");
 const helmet = require("helmet");
 const productRouter = require("./routes/product.routes");
 const userRouter = require("./routes/user.routes");
-const fileRouter = require("./routes/file.routes");
 const httpLogger = require("./logging/httpLogger");
-const multer = require("multer");
+const { errorHandler } = require("./middlewares/errorHandler");
 
 const app = express();
 
 app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-// app.use(multer().none());
-// app.use(express.toString());
+app.use(express.urlencoded({ extended: false }));
 
 app.use(cors());
 app.use(helmet());
 app.use(httpLogger);
 
 app.use("/", userRouter);
-app.use("/", fileRouter);
 app.use("/api/v0/product", productRouter);
 
 // Home Route
@@ -37,5 +33,7 @@ app.get("*", (req, res) => {
     message: "Route does not exist",
   });
 });
+
+app.use(errorHandler);
 
 module.exports = app;

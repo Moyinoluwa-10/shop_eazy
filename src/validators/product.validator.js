@@ -25,7 +25,7 @@ async function addProductValidationMW(req, res, next) {
     await productAddSchema.validateAsync(payLoad);
     next();
   } catch (error) {
-    error.source = "prduct validation";
+    error.source = "product validation";
     error.message = error.details[0].message;
     next(error);
   }
@@ -38,7 +38,7 @@ async function updateProductValidationMW(req, res, next) {
     await updateProductSchema.validateAsync(payLoad);
     next();
   } catch (error) {
-    error.source = "prduct validation";
+    error.source = "product validation";
     error.message = error.details[0].message;
     next(error);
   }
