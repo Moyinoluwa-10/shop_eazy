@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema(
     last_name: { type: String, required: true },
     dob: { type: Date, required: true },
     phone_number: { type: Number, required: true },
-    roles: {
+    role: {
       type: String,
       enum: ["admin", "user"],
       default: "user",

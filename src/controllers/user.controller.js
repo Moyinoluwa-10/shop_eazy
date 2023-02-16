@@ -1,6 +1,6 @@
 const userModel = require("../models/user.model");
 const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../config/config");
+const { JWT_SECRET, EXPIRY_TIME } = require("../config/config");
 
 const createUser = async (req, res, next) => {
   try {
@@ -59,7 +59,7 @@ const loginUser = async (req, res, next) => {
       last_name: user.last_name,
     };
 
-    const validityPeriod = "1h";
+    const validityPeriod = EXPIRY_TIME;
 
     const token = jwt.sign(body, JWT_SECRET, {
       expiresIn: validityPeriod,
